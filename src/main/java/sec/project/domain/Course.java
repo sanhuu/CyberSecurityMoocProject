@@ -24,6 +24,10 @@ public class Course extends AbstractPersistable<Long>{
     private String description;
     private String time;
     
+    public Course() {
+        
+    }
+    
     
     public Course(String nro, String name, String description, String time) {
         this.name = name;
@@ -33,11 +37,11 @@ public class Course extends AbstractPersistable<Long>{
     }
     
     
-    public String getNimi() {
+    public String getName() {
         return this.name;
     }
     
-    public void setNimi(String name) {
+    public void setName(String name) {
         this.name = name;
     }
     
@@ -50,21 +54,21 @@ public class Course extends AbstractPersistable<Long>{
         this.courseid = nro;
 }
      
-     public String getKuvaus() {
+     public String getDesc() {
         return this.description;
     }
      
      
-     public void setKuvaus(String description) {
+     public void setDesc(String description) {
         this.description = description;
 }
      
-     public String getAika() {
+     public String getTime() {
         return this.time;
     }
      
      
-     public void setAika(String aika) {
+     public void setTime(String aika) {
         this.time = time;
 }
 }

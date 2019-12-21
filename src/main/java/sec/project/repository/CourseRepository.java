@@ -15,5 +15,6 @@ import sec.project.domain.Course;
 public interface CourseRepository extends JpaRepository<Course, Long>  {
     
     Course findBycourseid(String courseid);
+
     
 }

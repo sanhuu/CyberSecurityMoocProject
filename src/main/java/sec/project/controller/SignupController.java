@@ -1,9 +1,13 @@
 package sec.project.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +34,8 @@ public class SignupController {
     
     @Autowired
     private RecordRepository recordRepository;
+    
+    private List<Course> searchresult = new ArrayList();
     
 
     @RequestMapping("*")
@@ -145,15 +151,41 @@ public class SignupController {
     
     
     @RequestMapping(value = "/courses", method = RequestMethod.GET)
-    public String loadCourses() {
+    public String loadCourses(Model model) {
+        System.out.println("tähän asti ok");
         
-               
-
-    
+        ArrayList<Course> list = new ArrayList();
+        System.out.println("KURSSIT: " + courseRepository.findAll());
+        courseRepository.findAll().forEach(a -> list.add(a));
+        System.out.println("tämäkin ok");
+        
+        if(!searchresult.isEmpty()) {
+            model.addAttribute("Course details: " + searchresult);
+        }
         
         
 
         return "courses";
     }
+    
+    
+    
+    @RequestMapping(value = "/courses/{courseId}", method = RequestMethod.POST)
+    public String addCourse(@PathVariable String courseId, @RequestParam String name, @RequestParam String courseid) {
+        System.out.println("tultiin oikeaan metodiin");
+        Course course = courseRepository.findBycourseid(courseId);
+        System.out.println("löytyikö kurssi: " + course);
+        if(course == null) {
+            System.out.println("kurssi oli null");
+            List<Course> list = new ArrayList();
+            list = courseRepository.findAll();
+            searchresult = list.stream().filter(a -> a.getName().contains(name)).collect(Collectors.toList());
+            System.out.println("listassa nyt: " + searchresult.size());
+        }
+                
+
+        return "redirect: /courses";
+    }
+    
 
 }
