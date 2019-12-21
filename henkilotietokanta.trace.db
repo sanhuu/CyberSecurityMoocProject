@@ -1,0 +1,6 @@
+2019-12-21 12:32:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "OPISKELIJA" not found; SQL statement:
+SELECT nimi FROM Opiskelija [42102-193]
+2019-12-21 12:36:43 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "OPISKELIJA" not found; SQL statement:
+SELECT nimi FROM Opiskelija [42102-193]

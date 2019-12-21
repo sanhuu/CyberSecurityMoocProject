@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Courses </title>
+    </head>
+    <body>
+      <h1><strong>Here you can search for courses </strong></h1>
+       <form action="#" th:action="@{/searchcourses}" method="POST">
+         <p><label for="name">Course name</label>: <input type="text" name="name" id="name"/></p>
+         <p><label for="coursenumber">Course code</label>: <input type="text" name="address" id="address"/></p>
+         <p><input type="button" value="Search" /></p>
+       </form>
+      
+     
+      <p><a href="menu.html"> Back to menu</a></p>
+    </body>
+</html>
