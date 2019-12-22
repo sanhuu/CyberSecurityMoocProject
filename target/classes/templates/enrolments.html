@@ -9,6 +9,14 @@
         <p><label for="studentnumber">Student number</label>: <input type="text" name="address" id="address"/></p>
         <p><input type="button" value="Download" /></p>
       </form>
+      <ul>
+            <li th:each="course : ${enrolCourses}">
+                <p> <span th:text="${course.getName()}">course</span> </p>
+                <p><span th:text="${course.getNro()}">999</span> </p>
+                <p><span th:text="${course.getTime()}">999</span> </p>
+                <p><span th:text="${course.getDesc()}">999</span> </p>
+            </li>
+        </ul>
       
       
       <p><a href="menu.html"> Back to menu</a></p>

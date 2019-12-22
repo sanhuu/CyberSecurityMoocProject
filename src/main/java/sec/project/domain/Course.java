@@ -19,19 +19,19 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Course extends AbstractPersistable<Long>{
     
     @Column(unique = true)
-    private String courseid;
+    private String courseId;
     private String name;
     private String description;
     private String time;
     
     public Course() {
-        
+        super();
     }
     
     
     public Course(String nro, String name, String description, String time) {
         this.name = name;
-        this.courseid = nro;
+        this.courseId = nro;
         this.description = description;
         this.time = time;
     }
@@ -46,12 +46,12 @@ public class Course extends AbstractPersistable<Long>{
     }
     
      public String getNro() {
-        return this.courseid;
+        return this.courseId;
     }
      
      
      public void setNro(String nro) {
-        this.courseid = nro;
+        this.courseId = nro;
 }
      
      public String getDesc() {

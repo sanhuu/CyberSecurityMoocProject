@@ -5,6 +5,7 @@
  */
 package sec.project.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import sec.project.domain.Record;
 
@@ -14,5 +15,7 @@ import sec.project.domain.Record;
  */
 public interface RecordRepository extends JpaRepository<Record, Long> {
     Record findByRecordId(String recordId);
-    
+     List<Record> findByStudentId(String studentId);
+     List<Record> findByCourseId(String courseId);
+
 }

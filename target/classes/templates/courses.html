@@ -4,12 +4,25 @@
         <title>Courses </title>
     </head>
     <body>
-      <h1><strong>Here you can search for courses </strong></h1>
-       <form action="#" th:action="@{/courses/{courseId}(courseId=${entry.key.id})}" method="POST">
+      <h1><strong>Here you can search for courses </strong></h1> <!-- //action="#" -->
+        <form th:action="@{/courses}" method="POST"> <!-- /{courseid}(courseid=${coursenumber})-->
          <p><label for="name">Course name</label>: <input type="text" name="name" id="name"/></p>
-         <p><label for="coursenumber">Course code</label>: <input type="text" name="address" id="address"/></p>
-         <p><input type="submit" value="Search" /></p>
+         <p><label for="courseId">Course code</label>: <input type="text" name="courseId" id="name"/></p>
+         <p><input type="submit" value="Search" /></p>       
        </form>
+       <ul>
+            <li th:each="course : ${searchresult}">
+                <p> <span th:text="${course.getName()}">course</span> </p>
+                <p><span th:text="${course.getNro()}">coursenumber</span></p>
+                <p><span th:text="${course.getTime()}">999</span> </p>
+                <p><span th:text="${course.getDesc()}">999</span> </p>
+                <form th:action="@{/enrolments}" th:method="POST">
+                    <p><label for="studentId">Student number</label>: <input type="text" name="studentId" id="name"/></p>
+                    <p><input type="hidden" name="courseId" id="name" th:value="${course.getNro()}"/></p>
+                    <input type="submit" value="Enrol"/>
+                    </form>
+            </li>
+        </ul>
       
      
       <p><a href="menu.html"> Back to menu</a></p>

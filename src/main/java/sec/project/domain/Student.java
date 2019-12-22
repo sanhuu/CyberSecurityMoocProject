@@ -30,18 +30,21 @@ public class Student extends AbstractPersistable<Long> {
 //    private HashMap<String, Kurssi> suoritukset;
 //    private HashMap<String, Integer> arvosanat;
     
-    @OneToMany
-    private List<Course> enrolments;
+//      @OneToMany
+//      private List<Course> enrolments;
     
-    @OneToMany
-    private List<Record> records;
+//      @OneToMany
+//      private List<Record> records;
     
+    public Student() {
+        super();
+    }
     
     public Student(String nro, String name) {
         this.name = name;
         this.studentnumber = nro;
-        this.records = new ArrayList();
-        this.enrolments=new ArrayList();
+//          this.records = new ArrayList();
+//          this.enrolments=new ArrayList();
     }
     
     
@@ -62,22 +65,22 @@ public class Student extends AbstractPersistable<Long> {
         this.studentnumber = nro;
 }
      
-    public List getEnrols() {
-        return this.enrolments;
-    }
+//      public List getEnrols() {
+//          return this.enrolments;
+//      }
      
      
-     public void setEnrols(Course course) {
-        this.enrolments.add(course);
-}
+//       public void setEnrols(Course course) {
+//          this.enrolments.add(course);
+//  }
      
-    public List<Record> getRecords() {
-        return this.records;
-    }
+//      public List<Record> getRecords() {
+//          return this.records;
+//      }
      
-    public void setRecords(Record record) {
-        this.records.add(record);
-    }
+//      public void setRecords(Record record) {
+//          this.records.add(record);
+//      }
 //     public void setSuoritus(String kurssinimi, Kurssi kurssi) {
 //        this.suoritukset.put(kurssinimi, kurssi);
 //}

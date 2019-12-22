@@ -24,6 +24,11 @@ public class Record extends AbstractPersistable<Long>  {
     private String courseId;
     private Integer evaluation;
     
+    public Record() { 
+        super();
+        
+    }
+    
     public Record(String studentId, String courseId, Integer evaluation) {
         this.recordId = studentId + courseId;
         this.studentId = studentId;

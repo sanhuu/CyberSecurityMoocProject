@@ -1,5 +1,7 @@
 /home/j/Sannan_koulujutut/netbeans-projektit/Oma_projekti/CyberSecurityMoocProject/src/main/java/sec/project/repository/RecordRepository.java
+/home/j/Sannan_koulujutut/netbeans-projektit/Oma_projekti/CyberSecurityMoocProject/src/main/java/sec/project/repository/EnrolmentRepository.java
 /home/j/Sannan_koulujutut/netbeans-projektit/Oma_projekti/CyberSecurityMoocProject/src/main/java/sec/project/CyberSecurityBaseProjectApplication.java
+/home/j/Sannan_koulujutut/netbeans-projektit/Oma_projekti/CyberSecurityMoocProject/src/main/java/sec/project/domain/Enrolment.java
 /home/j/Sannan_koulujutut/netbeans-projektit/Oma_projekti/CyberSecurityMoocProject/src/main/java/sec/project/config/SecurityConfiguration.java
 /home/j/Sannan_koulujutut/netbeans-projektit/Oma_projekti/CyberSecurityMoocProject/src/main/java/sec/project/domain/Account.java
 /home/j/Sannan_koulujutut/netbeans-projektit/Oma_projekti/CyberSecurityMoocProject/src/main/java/sec/project/repository/StudentRepository.java
