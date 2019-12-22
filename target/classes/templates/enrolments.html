@@ -4,7 +4,8 @@
         <title>Courses </title>
     </head>
     <body>
-      <h1><strong>Here you can check your enrolments </strong></h1>
+      <h1><strong>Enrolments </strong></h1>
+      <h2>Here you can check your enrolments</h2>
       <form action="#" th:action="@{/enrolments}" method="POST">
         <p><label for="studentnumber">Write your student number</label>: <input type="text" name="studentId" id="name"/></p>
         <p><input type="submit" value="Check enrolments" /></p>
@@ -15,6 +16,19 @@
                 <p><span th:text="${course.getNro()}">999</span> </p>
                 <p><span th:text="${course.getTime()}">999</span> </p>
                 <p><span th:text="${course.getDesc()}">999</span> </p>
+            </li>
+        </ul>
+      <h2>Check enrolments to a specific course</h2>
+       <form action="#" th:action="@{/enrolments}" method="POST">
+        <p><label for="requestedCourseId">Course id</label>: <input type="text" name="requestedCourseId" id="name"/></p>
+        <p><input type="submit" value="Check enrolments" /></p>
+      </form>
+      <div th:if="${enrolled!=null and enrolled.isEmpty() }">
+          <p> No enrolments to this course yet! </p>
+      </div>
+      <ul>
+            <li th:each="enrolment: ${enrolled}">
+                <p> <span th:text="${enrolment.toString()}">student</span> </p>
             </li>
         </ul>
       

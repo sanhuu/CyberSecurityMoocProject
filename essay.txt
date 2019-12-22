@@ -1,0 +1,50 @@
+LINK: <link to the repository>
+<installation instructions if needed>
+
+FLAW 1:
+<description of flaw 1>
+Broken Access Control
+There are several this type of security issues in Weboodi-program. The transcript of records -site and the enrolment -site requests the user to
+give their student number to download their transcript of records or enrolments. The student number is not connected to the login-data so the user
+may give whichever studentnumber and if it is an existing one, the program will download the requested information though the studentnumber would be
+someone else's.
+<how to fix it>
+The student number should be connected to the login data. There shouldn't be any field to which the user should write their student number but the 
+data could be downloaded according to the user information and thus the user wouldn't have access to information that doesn't belong to him/her.
+This would also make the application nicer to use since now the user needs to write his/her studentnumber constantly in order to get the information
+needed.
+
+FLAW 2:
+<description of flaw 2>
+Insufficient Logging & Monitoring
+The program doesn't allow the user to log out of the program nor will the program through the user out since the session never gets old. There is a 
+"Log out" -button but it doesn't do anything since the logout-function is not configured. If the program is used in a shared computer, this poses a 
+serious security threat not only due to human factor (the user forgets to shut the browser) but also because session hijacking gets easier.
+<how to fix it>
+An option for logging out of the session should be added to the program. This could be added directly through the logout-function in Spring Security
+package. The logout-fuction needs to be configured to the xml-file and requires the user to be directed to another page and session closed.
+
+FLAW 3:
+<description of flaw 3>
+Sensitive Data Exposure
+In addition to the flaw 1 which allows the user to access information that he/she shouldn't be, there is also a function that returns too much
+information to the user thus allowing him/her to easily take advantage of the flaw 1. This flaw is in the enrolment -site where a student may check
+the enrolments to a specific course to see if there are others that have enrolled to this course. Of course in this GDPR time this function is 
+questionable to begin with because the enrolling to a course does not ask the student whether he/she wants his/her name published in the course
+enrolment list. In addition to being able to search the enrolled students and get their names, the search function also returns their student 
+numbers to the user.
+<how to fix it>
+In the enrolment function there should firstly be an option for the student to refuse to get their names published in the enrolment list (which is
+a functin that I think exists in the real Weboodi though not sure whether the enrolment list is there anymore due to GDPR). Also the search for 
+enrolments in specific course function in the enrolment site should be corrected so that it only shows the name of the enrolled. Now the toString() 
+-function is called and it is defined so that it also returns the student number (defining the toString() function like this propably would make
+coding a lot easier when creating admin roles to the program since those roles usually have different kind of  needs for information but this is 
+outside this program version :) ). 
+
+FLAW 4:
+<description of flaw 1>
+<how to fix it>
+
+FLAW 5:
+<description of flaw 5>
+<how to fix it>

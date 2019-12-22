@@ -56,7 +56,7 @@ public class SignupController {
         
         
         return "redirect:/menu";
-        //tämä muutettu, aiemmin /form
+       
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
@@ -89,9 +89,10 @@ public class SignupController {
     
     
     @RequestMapping(value = "/enrolments")
-    public String loadEnrolments(Model model, @RequestParam (required=false) String courseId, @RequestParam(required=false) String studentId) { //, @PathVariable String courseId, @PathVariable Long courseLongId 
-        System.out.println("courseId: " + courseId);
+    public String loadEnrolments(Model model, @RequestParam (required=false) String courseId, @RequestParam (required=false) String requestedCourseId, @RequestParam(required=false) String studentId) { //, @PathVariable String courseId, @PathVariable Long courseLongId 
+         System.out.println("courseId: " + courseId);
          System.out.println("studentId: " + studentId);
+         System.out.println("requestedCourseId: " + requestedCourseId);
          if(studentId != null) {
             List<Enrolment> enrolments = enrolmentRepository.findByStudentId(studentId);
             if(courseId != null) {
@@ -113,30 +114,21 @@ public class SignupController {
             model.addAttribute("enrolCourses", enrolCourses);
         }
          }
+         else if(requestedCourseId != null) {
+             List<Student> enrolled = new ArrayList();
+             List<Enrolment> enrolments = enrolmentRepository.findByCourseId(requestedCourseId);
+             for(Enrolment enrol: enrolments) {
+                 enrolled.add(studentRepository.findByStudentnumber(enrol.getStudentId()));
+             }
+             if(enrolled == null) {
+                 enrolled = new ArrayList();
+             }
+             model.addAttribute("enrolled", enrolled);
+         }
          
         return "enrolments";
     }
 
-    
-    
-    //@RequestMapping(value = "/courses", method = RequestMethod.GET)
-   // public String loadCourses(Model model) {
-   //     System.out.println("tähän asti ok");
-        
-       
-   //     System.out.println("tämäkin ok");
-        
-   //     if(!searchresult.isEmpty()) {
-   //         System.out.println("searchresult ei ollut null");
-   //         model.addAttribute("Course details: " + searchresult);
-   //     }
-   //     System.out.println("seuraavaksi palautetaan courses");
-        
-        
-
-     //   return "courses";
-   // }
-    
     
     
     @RequestMapping(value = "/courses")
@@ -160,12 +152,10 @@ public class SignupController {
             System.out.println("searchresult ei ollut null");
             model.addAttribute("searchresult", searchresult);
         }
-        }           
-        
-
+        }    
         return "courses";
-    
     }
+    
     
     public void createDatabase() {
         
@@ -235,15 +225,7 @@ public class SignupController {
         System.out.println("tallennettiin opiskelijoille suoritukset, esim. ted: " + recordRepository.findByStudentId(studentRepository.findByName("Ted").getNro()).size() + "suoritusta");
         System.out.println("tallennettiin opiskelijoille ilmoittautumiset, esim. ted: " + enrolmentRepository.findByStudentId(studentRepository.findByName("Ted").getNro()).size());
         
- //       for(Student opiskelija: opiskelijat) {
- //           System.out.println(opiskelija.getName());
- //           if(!opiskelija.getRecords().isEmpty()) {
- //           for(Record kurssi: opiskelija.getRecords()) {
- //               
- //               studentRepository.findByName(opiskelija.getName()).setEnrols(courseRepository.findByCourseId(kurssi.getCourseId()));
- //           }
- //       }
- //       }
+ 
         
     }
 

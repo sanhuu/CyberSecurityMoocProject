@@ -65,6 +65,11 @@ public class Student extends AbstractPersistable<Long> {
         this.studentnumber = nro;
 }
      
+     @Override
+     public String toString() {
+         return this.getName() +" (" + this.getNro() +")";
+     }
+     
 //      public List getEnrols() {
 //          return this.enrolments;
 //      }
