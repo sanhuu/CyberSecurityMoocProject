@@ -19,6 +19,4 @@ public interface EnrolmentRepository extends JpaRepository<Enrolment, Long> {
         List<Enrolment> findByStudentId(String studentId);
         List<Enrolment> findByCourseId(String courseId);
 
-    
-    
 }

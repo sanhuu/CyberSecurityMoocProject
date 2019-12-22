@@ -1,22 +1,26 @@
 LINK: <link to the repository>
+
 <installation instructions if needed>
+The program has been built on the basis of the given template so it can be downloaded as a zip from github and downloaded as project to Netbeans where
+it can be run.
 
 FLAW 1:
 <description of flaw 1>
-Broken Access Control
+A5:2017-Broken Access Control
 There are several this type of security issues in Weboodi-program. The transcript of records -site and the enrolment -site requests the user to
 give their student number to download their transcript of records or enrolments. The student number is not connected to the login-data so the user
 may give whichever studentnumber and if it is an existing one, the program will download the requested information though the studentnumber would be
-someone else's.
+someone else's. Also even though the page should be behind login access, for example the http://localhost:8080/enrolments.html can be accessed simply
+by writing that url to browser.
 <how to fix it>
 The student number should be connected to the login data. There shouldn't be any field to which the user should write their student number but the 
 data could be downloaded according to the user information and thus the user wouldn't have access to information that doesn't belong to him/her.
 This would also make the application nicer to use since now the user needs to write his/her studentnumber constantly in order to get the information
-needed.
+needed. Also the access to the pages simply by writing the URL should be blocked for example by proper controlling of the session tokens. 
 
 FLAW 2:
 <description of flaw 2>
-Insufficient Logging & Monitoring
+A10:2017-Insufficient Logging & Monitoring
 The program doesn't allow the user to log out of the program nor will the program through the user out since the session never gets old. There is a 
 "Log out" -button but it doesn't do anything since the logout-function is not configured. If the program is used in a shared computer, this poses a 
 serious security threat not only due to human factor (the user forgets to shut the browser) but also because session hijacking gets easier.
@@ -26,7 +30,7 @@ package. The logout-fuction needs to be configured to the xml-file and requires 
 
 FLAW 3:
 <description of flaw 3>
-Sensitive Data Exposure
+A3:2017-Sensitive Data Exposure
 In addition to the flaw 1 which allows the user to access information that he/she shouldn't be, there is also a function that returns too much
 information to the user thus allowing him/her to easily take advantage of the flaw 1. This flaw is in the enrolment -site where a student may check
 the enrolments to a specific course to see if there are others that have enrolled to this course. Of course in this GDPR time this function is 
@@ -42,9 +46,34 @@ coding a lot easier when creating admin roles to the program since those roles u
 outside this program version :) ). 
 
 FLAW 4:
-<description of flaw 1>
+<description of flaw 4>
+A1:2017 - Injection
+The program uses a database that is based on JPARepositories. All of the fields in the program that request an input from the user, directly search
+for the requested information in the repository and apparently these are all vulnerable to SQL-injections. This is a very good lesson to be learned
+from this project 'cause if the programmer isn't well familiar with JPARepositories and SQL-Injections, he would probably assume that this ready-made
+mechanism in JPARepositories would somehow block these injections. For example, if in the enrolment page one would instead of writing his/her 
+studentnumber, would instead write "SELECT * FROM Student WHERE studentnumber LIKE '%'; DROP TABLE Student;", this would lead to the whole database
+table to be deleted, after which no student number would return any enrolments or transcripts (this can be tried with the above SQL-sentence and 
+afterwards searching for any of the example students created when the program is run).
 <how to fix it>
+To avoid SQL-injection, the information that is received as in input from the site should not be used plainly in a database query. The database query
+should be done with a parameter where the input data is validated and checked for keywords and symbols that alter the database. Also, in this program
+the user is asked to give his/her studentnumber, which usually has specific form (in this case it is plainly 7 numbers) so there is no point in 
+allowing the input field to be so long that a whole SQL-query can be written to it. In the program all the data in the database is stored as string 
+but it could've been stored also for example as integer or other class in which case there should also be code that checks that the input can be
+changed to another class (that matching the data class in the database).
 
 FLAW 5:
 <description of flaw 5>
+A7:2017 - Cross-Site Scripting(XSS)
+The program contains one field which was specifically created to allow this security flaw. The field that allows the running of scripts and code
+though the field in this program is currently allowing only self-destructive behaviour. The field is in enrolment-site where there is a functionality
+for checking enrolments to a specific course. The string used as search criteria is then posted to the page for the user to see it. If for example a
+script <script message="javascript" type="text/javascript">alert("Hello World");</script> is written to it, the code is executed since the sanitation
+of the input is lacking.
 <how to fix it>
+This security flaw can be fixed simply by changing the th:utext in the row 32 of enrolments.html to th:text. There is no reason why unescapted text 
+should be used in part of the HTML-document, it was simply added to create the last flaw to the program and to demonstrate the security flaw allowing
+XSS-attacks. Obviously a real hacker could probably use this flaw to make the user execute code on his/her own computer but for an inexperienced 
+programmer such as ours truly taking advantage of this kind of flaw only works as shooting yourself in the leg since it'll be your computer where 
+the script is run.

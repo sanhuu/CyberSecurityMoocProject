@@ -22,9 +22,14 @@
        <form action="#" th:action="@{/enrolments}" method="POST">
         <p><label for="requestedCourseId">Course id</label>: <input type="text" name="requestedCourseId" id="name"/></p>
         <p><input type="submit" value="Check enrolments" /></p>
+        
       </form>
+
       <div th:if="${enrolled!=null and enrolled.isEmpty() }">
           <p> No enrolments to this course yet! </p>
+      </div>
+      <div th:if="${requestedCourseId!=null}">
+          <p><span th:utext="${requestedCourseId}"></span></p>
       </div>
       <ul>
             <li th:each="enrolment: ${enrolled}">

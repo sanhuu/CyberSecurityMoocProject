@@ -49,10 +49,11 @@ public class SignupController {
     public String defaultMapping() {
         
         System.out.println("päädyttiin deafultMapping -metodiin");
+        createDatabase();
         
-        if(studentRepository.findAll().isEmpty()) {
-            createDatabase();
-        }
+    //    if(studentRepository.findAll().isEmpty()) {
+    //        createDatabase();
+    //    }
         
         
         return "redirect:/menu";
@@ -93,13 +94,15 @@ public class SignupController {
          System.out.println("courseId: " + courseId);
          System.out.println("studentId: " + studentId);
          System.out.println("requestedCourseId: " + requestedCourseId);
+         model.addAttribute("requestedCourseId", requestedCourseId);
          if(studentId != null) {
             List<Enrolment> enrolments = enrolmentRepository.findByStudentId(studentId);
             if(courseId != null) {
                 Course course = courseRepository.findByCourseId(courseId);
                 System.out.println("course: " + course);
-                if(!enrolments.contains(course)) {
+                if(enrolmentRepository.findByEnrolId(studentId + courseId)==null) {
                     Enrolment enrolment = new Enrolment(studentId, course.getNro()); 
+                    System.out.println(enrolment.toString());
                     enrolments.add(enrolment);
                     enrolmentRepository.save(enrolment);
                     System.out.println("enrolments for " + studentRepository.findByStudentnumber(studentId) + ": " + enrolments);
@@ -112,6 +115,7 @@ public class SignupController {
             }
             System.out.println("enrolments ei ollut null");
             model.addAttribute("enrolCourses", enrolCourses);
+
         }
          }
          else if(requestedCourseId != null) {
@@ -134,25 +138,40 @@ public class SignupController {
     @RequestMapping(value = "/courses")
     public String searchCourse(Model model, @RequestParam(required=false) String name, @RequestParam (required=false) String courseId) { //, @PathVariable String courseId, @PathVariable Long courseLongId
         System.out.println("tultiin oikeaan metodiin");
-        System.out.println(courseId);
-        if(courseId != null || name != null) {
+        System.out.println("courseId: " + courseId);
+        System.out.println("nimi: " + name);
+        String searchcriteria = "";
+
+        
+        if((courseId != null && !courseId.isEmpty()) || (name != null && !name.isEmpty())) {
             Course course = courseRepository.findByCourseId(courseId);
+            if(course == null) {courseId = null;}
             System.out.println("löytyikö kurssi: " + course);
             if(!searchresult.contains(course)) {
-            if(course == null && name != null) {
-                System.out.println("kurssi oli null");
-                List<Course> list = new ArrayList();
-                list = courseRepository.findAll();
-                searchresult = list.stream().filter(a -> a.getName().contains(name)).collect(Collectors.toList());
-                System.out.println("listassa nyt: " + searchresult.size());
-            } else {searchresult.add(course);}
+                if(course == null && (name != null) && !name.isEmpty()) {
+                    System.out.println("kurssi oli null");
+                    List<Course> list = new ArrayList();
+                    list = courseRepository.findAll();
+                    searchresult = list.stream().filter(a -> a.getName().contains(name)).collect(Collectors.toList());
+                    System.out.println("listassa nyt: " + searchresult.size());
+                } else {searchresult.add(course);}
             }
-            
-            if(!searchresult.isEmpty()) {
-            System.out.println("searchresult ei ollut null");
-            model.addAttribute("searchresult", searchresult);
         }
-        }    
+        
+        if(searchresult == null) {
+            searchresult = new ArrayList();
+        }
+        if(name != null && !name.isEmpty()) {
+        searchcriteria = searchcriteria + name;}
+        if(courseId != null && !courseId.isEmpty()) {
+            searchcriteria = searchcriteria + courseId;
+        }
+        System.out.println("criteria: " + searchcriteria.isEmpty());
+        System.out.println("result: " + searchresult.isEmpty());
+        System.out.println("resultcontent: " + searchresult);
+        model.addAttribute("searchresult", searchresult);
+        model.addAttribute("searchcriteria", searchcriteria);
+        searchresult = new ArrayList();
         return "courses";
     }
     

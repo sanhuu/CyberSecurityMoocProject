@@ -60,7 +60,10 @@ public class Enrolment extends AbstractPersistable<Long>  {
         this.courseId = id;
     }
    
-    
+    @Override
+    public String toString() {
+    return this.courseId + "; " + this.studentId + "; " + this.enrolId;
+    }
     
 }
     
