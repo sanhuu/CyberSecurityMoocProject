@@ -77,12 +77,15 @@ public class SignupController {
     
     @RequestMapping(value = "/records")
     public String loadRecords(Model model, @RequestParam (required=false) String studentId) {
+        if(studentId != null && studentRepository.findByStudentnumber(studentId) == null) {
+            studentId = "-1";
+        }
         List<Record> records = recordRepository.findByStudentId(studentId);
         System.out.println(records);
         if(records == null) {
             records = new ArrayList();
         }
-        
+        model.addAttribute("studentId", studentId);
         model.addAttribute("records", records);
         
         return "records";
@@ -95,9 +98,9 @@ public class SignupController {
          System.out.println("studentId: " + studentId);
          System.out.println("requestedCourseId: " + requestedCourseId);
          model.addAttribute("requestedCourseId", requestedCourseId);
-         if(studentId != null) {
+         if(studentRepository.findByStudentnumber(studentId)!= null) {
             List<Enrolment> enrolments = enrolmentRepository.findByStudentId(studentId);
-            if(courseId != null) {
+            if(courseRepository.findByCourseId(courseId) != null) {
                 Course course = courseRepository.findByCourseId(courseId);
                 System.out.println("course: " + course);
                 if(enrolmentRepository.findByEnrolId(studentId + courseId)==null) {
@@ -140,9 +143,7 @@ public class SignupController {
         System.out.println("tultiin oikeaan metodiin");
         System.out.println("courseId: " + courseId);
         System.out.println("nimi: " + name);
-        String searchcriteria = "";
-
-        
+        String searchcriteria = "-1";
         if((courseId != null && !courseId.isEmpty()) || (name != null && !name.isEmpty())) {
             Course course = courseRepository.findByCourseId(courseId);
             if(course == null) {courseId = null;}
@@ -158,18 +159,20 @@ public class SignupController {
             }
         }
         
-        if(searchresult == null) {
-            searchresult = new ArrayList();
-        }
+        
         if(name != null && !name.isEmpty()) {
-        searchcriteria = searchcriteria + name;}
-        if(courseId != null && !courseId.isEmpty()) {
-            searchcriteria = searchcriteria + courseId;
+        searchcriteria = name;}
+        if(courseId != null && !courseId.isEmpty() && courseRepository.findByCourseId(courseId)!=null) {
+            searchcriteria = courseId;
         }
-        System.out.println("criteria: " + searchcriteria.isEmpty());
+        if(searchresult.contains(null) || searchresult == null || (searchresult.isEmpty() && searchcriteria != "-1")) {
+            searchcriteria ="-2";
+        }
+        System.out.println("criteria: " + searchcriteria);
         System.out.println("result: " + searchresult.isEmpty());
         System.out.println("resultcontent: " + searchresult);
-        model.addAttribute("searchresult", searchresult);
+        if(searchcriteria != "-2") {
+            model.addAttribute("searchresult", searchresult); }
         model.addAttribute("searchcriteria", searchcriteria);
         searchresult = new ArrayList();
         return "courses";

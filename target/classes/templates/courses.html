@@ -5,16 +5,13 @@
     </head>
     <body>
       <h1><strong>Here you can search for courses </strong></h1> <!-- //action="#" -->
-        <form th:action="@{/courses}" method="POST"> <!-- /{courseid}(courseid=${coursenumber})-->
+        <form action="#" th:action="@{/courses}" method="POST"> <!-- /{courseid}(courseid=${coursenumber})-->
          <p><label for="name">Course name</label>: <input type="text" name="name" id="name"/></p>
          <p><label for="courseId">Course code</label>: <input type="text" name="courseId" id="name"/></p>
          <p><input type="submit" value="Search" /></p>       
        </form>
-       <div th:if="${searchresult.size()<1 and !searchcriteria.isEmpty()}">
+       <div th:if="${searchcriteria=='-2'}">
           <p> No courses were found! </p>
-      </div>
-      <div th:if="${searchresult.size()<1 and searchcriteria.isEmpty()}">
-          <p></p>
       </div>
        <ul>
             <li th:each="course : ${searchresult}">

@@ -9,10 +9,9 @@
             <p><label for="studentnumber">Write your student number</label>: <input type="text" name="studentId" id="name"/></p>
             <p><input type="submit" value="Download" /></p>
       </form>
-      <div th:if="${records.isEmpty() and studentnumber!=null}">
+      <div th:if="${records.isEmpty() and studentId!=null}">
           <p> No records were found! </p>
-      </div>
-      
+      </div>      
       <ul>
             <li th:each="record : ${records}">
                 <p> <span th:text="'Course id: ' + ${record.getCourseId()}">record</span> </p>
@@ -21,9 +20,6 @@
 
             </li>
         </ul>     
-      
-      
-      
       
       <p><a href="menu.html"> Back to menu</a></p>
     </body>
