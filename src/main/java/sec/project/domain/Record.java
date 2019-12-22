@@ -22,6 +22,7 @@ public class Record extends AbstractPersistable<Long>  {
     private String recordId;
     private String studentId;
     private String courseId;
+    private String courseName;
     private Integer evaluation;
     
     public Record() { 
@@ -29,10 +30,11 @@ public class Record extends AbstractPersistable<Long>  {
         
     }
     
-    public Record(String studentId, String courseId, Integer evaluation) {
+    public Record(String studentId, String courseId, String name, Integer evaluation) {
         this.recordId = studentId + courseId;
         this.studentId = studentId;
         this.courseId = courseId;
+        this.courseName = name;
         this.evaluation = evaluation;
     }
     
@@ -58,6 +60,14 @@ public class Record extends AbstractPersistable<Long>  {
 
     public void setCourseId(String id) {
         this.courseId = id;
+    }
+    
+    public String getCourseName() {
+        return this.courseName;
+    }
+
+    public void setCourseName(String name) {
+        this.courseName = name;
     }
     
     public Integer getEvaluation() {

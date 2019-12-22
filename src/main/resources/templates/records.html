@@ -5,11 +5,22 @@
     </head>
     <body>
       <h1><strong>Here you can download your transcript of records </strong></h1>
-      <form action="#" th:action="@{/searchcourses}" method="POST">
-        <p><label for="studentnumber">Student number</label>: <input type="text" name="address" id="address"/></p>
-        <p><input type="button" value="Download" /></p>
+        <form action="#" th:action="@{/records}" method="POST">
+            <p><label for="studentnumber">Write your student number</label>: <input type="text" name="studentId" id="name"/></p>
+            <p><input type="submit" value="Download" /></p>
       </form>
+      <div th:if="${records.isEmpty() and studentnumber!=null}">
+          <p> No records were found! </p>
+      </div>
       
+      <ul>
+            <li th:each="record : ${records}">
+                <p> <span th:text="'Course id: ' + ${record.getCourseId()}">record</span> </p>
+                <p><span th:text="'Course name: ' + ${record.getCourseName()}">coursename</span> </p> 
+                <p><span th:text="'Grade: ' + ${record.getEvaluation()}">evaluation</span> </p>
+
+            </li>
+        </ul>     
       
       
       

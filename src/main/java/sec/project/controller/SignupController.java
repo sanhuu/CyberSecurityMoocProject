@@ -74,8 +74,16 @@ public class SignupController {
     
     
     
-    @RequestMapping(value = "/records", method = RequestMethod.GET)
-    public String loadRecords() {
+    @RequestMapping(value = "/records")
+    public String loadRecords(Model model, @RequestParam (required=false) String studentId) {
+        List<Record> records = recordRepository.findByStudentId(studentId);
+        System.out.println(records);
+        if(records == null) {
+            records = new ArrayList();
+        }
+        
+        model.addAttribute("records", records);
+        
         return "records";
     }
     
@@ -90,7 +98,9 @@ public class SignupController {
                 Course course = courseRepository.findByCourseId(courseId);
                 System.out.println("course: " + course);
                 if(!enrolments.contains(course)) {
-                    enrolments.add(new Enrolment(studentId, course.getNro()));
+                    Enrolment enrolment = new Enrolment(studentId, course.getNro()); 
+                    enrolments.add(enrolment);
+                    enrolmentRepository.save(enrolment);
                     System.out.println("enrolments for " + studentRepository.findByStudentnumber(studentId) + ": " + enrolments);
                     }
             }
@@ -210,7 +220,7 @@ public class SignupController {
                 System.out.println("kurssi: " + kurssi.getNro());
                 if(suoritukset.isEmpty() || (!(suoritukset.contains(recordRepository.findByRecordId(opiskelija.getNro() + kurssi.getNro()))))) {
                     System.out.println("päädyttiin if-lauseeseen");
-                    Record suoritus = new Record(opiskelija.getNro(), kurssi.getNro(), random.nextInt(4)+1);
+                    Record suoritus = new Record(opiskelija.getNro(), kurssi.getNro(), kurssi.getName(), random.nextInt(4)+1);
                     Enrolment enrolment = new Enrolment(opiskelija.getNro(), kurssi.getNro());
                     System.out.println("luotiin arvosana: " + suoritus.getEvaluation());
                     recordRepository.save(suoritus);
