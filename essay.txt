@@ -4,14 +4,43 @@ LINK: <link to the repository>
 The program has been built on the basis of the given template so it can be downloaded as a zip from github and downloaded as project to Netbeans where
 it can be run.
 
+There are 2 test users that are created for testing purposes as the program is run:
+Username: ted
+Password: lol
+
+Username: aki
+Password: 123
+
+Also, in the end of SignupController.java there is a createDatabase() -function where the database is built and few exemplary courses and students are
+created for testing purposes.
+Teststudents: 
+Ted (0123456)
+Aki (1234567)
+Lea (2345678)
+Aino (3456789)
+Leo (4567891)
+
+Test crouses:
+HY12345, Tietokantojen perusteet
+HY23456, Ohjelmoinnin johdanto
+HY34567, Ohjelmoinnin jatkokurssi
+HY45678, Johdatus tietojenkäsittelytieteeseen
+HY45679, Tietokoneen toiminta
+HY56789, Introduction to Cyber Security
+HY67891, Securing Software
+HY78912, Course Project I
+HY89123, Advanced Topics
+HY91234, Course Project II
+
+
+
 FLAW 1:
 <description of flaw 1>
 A5:2017-Broken Access Control
 There are several this type of security issues in Weboodi-program. The transcript of records -site and the enrolment -site requests the user to
 give their student number to download their transcript of records or enrolments. The student number is not connected to the login-data so the user
 may give whichever studentnumber and if it is an existing one, the program will download the requested information though the studentnumber would be
-someone else's. Also even though the page should be behind login access, for example the http://localhost:8080/enrolments.html can be accessed simply
-by writing that url to browser.
+someone else's. 
 <how to fix it>
 The student number should be connected to the login data. There shouldn't be any field to which the user should write their student number but the 
 data could be downloaded according to the user information and thus the user wouldn't have access to information that doesn't belong to him/her.
@@ -20,13 +49,14 @@ needed. Also the access to the pages simply by writing the URL should be blocked
 
 FLAW 2:
 <description of flaw 2>
-A10:2017-Insufficient Logging & Monitoring
-The program doesn't allow the user to log out of the program nor will the program through the user out since the session never gets old. There is a 
+A2:2017-Broken Authentication
+The program doesn't allow the user to log out of the program nor will the program throw the user out since the session never gets old. There is a 
 "Log out" -button but it doesn't do anything since the logout-function is not configured. If the program is used in a shared computer, this poses a 
 serious security threat not only due to human factor (the user forgets to shut the browser) but also because session hijacking gets easier.
 <how to fix it>
 An option for logging out of the session should be added to the program. This could be added directly through the logout-function in Spring Security
-package. The logout-fuction needs to be configured to the xml-file and requires the user to be directed to another page and session closed.
+package. The logout-fuction needs to be configured to the xml-file and requires the user to be directed to another page and session closed. There 
+should also be a time-limit for the session after which the user is thrown out automaticly if they haven't used the service during that time.
 
 FLAW 3:
 <description of flaw 3>
@@ -47,21 +77,18 @@ outside this program version :) ).
 
 FLAW 4:
 <description of flaw 4>
-A1:2017 - Injection
-The program uses a database that is based on JPARepositories. All of the fields in the program that request an input from the user, directly search
-for the requested information in the repository and apparently these are all vulnerable to SQL-injections. This is a very good lesson to be learned
-from this project 'cause if the programmer isn't well familiar with JPARepositories and SQL-Injections, he would probably assume that this ready-made
-mechanism in JPARepositories would somehow block these injections. For example, if in the enrolment page one would instead of writing his/her 
-studentnumber, would instead write "SELECT * FROM Student WHERE studentnumber LIKE '%'; DROP TABLE Student;", this would lead to the whole database
-table to be deleted, after which no student number would return any enrolments or transcripts (this can be tried with the above SQL-sentence and 
-afterwards searching for any of the example students created when the program is run).
+A10:2017-Insufficient Logging & Monitoring
+The service has no logging whatsoever, except for some debugging println-code that gets printed in the console. Noting that is searched or done in
+the application, gets logged and basicly all the logging that might be done into the console, is lost when the program is restarted. This means that
+both errors in the functioning of the application and possible attacks on the application are very difficult if not impossible to detect and the at 
+least researching them is impossible.  
 <how to fix it>
-To avoid SQL-injection, the information that is received as in input from the site should not be used plainly in a database query. The database query
-should be done with a parameter where the input data is validated and checked for keywords and symbols that alter the database. Also, in this program
-the user is asked to give his/her studentnumber, which usually has specific form (in this case it is plainly 7 numbers) so there is no point in 
-allowing the input field to be so long that a whole SQL-query can be written to it. In the program all the data in the database is stored as string 
-but it could've been stored also for example as integer or other class in which case there should also be code that checks that the input can be
-changed to another class (that matching the data class in the database).
+Proper logs should be collected and saved. The logs should not be saved just locally but outside the software so that if the software needs to be 
+restarted or re-installed, the logs won't be lost. The logs should contain the activity of the normal users but also possible errors in the 
+functioning of the application. Using some kind of log management system would propably be a good start. Though it is not enough to plainly gather
+and save the logs but also an effective monitoring and alerting system for suspicious activity in the system, would be very important in terms of
+security. This is a great help to the management team and makes detecting attacks and errors much more effective and fast.
+
 
 FLAW 5:
 <description of flaw 5>

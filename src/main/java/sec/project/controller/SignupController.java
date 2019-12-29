@@ -48,12 +48,12 @@ public class SignupController {
     @RequestMapping("*")
     public String defaultMapping() {
         
-        System.out.println("päädyttiin deafultMapping -metodiin");
-        createDatabase();
+//        System.out.println("päädyttiin deafultMapping -metodiin");
+
         
-    //    if(studentRepository.findAll().isEmpty()) {
-    //        createDatabase();
-    //    }
+        if(studentRepository.findAll().isEmpty()) {
+            createDatabase();
+        }
         
         
         return "redirect:/menu";
@@ -62,16 +62,12 @@ public class SignupController {
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public String loadMenu() {
-        System.out.println("päädyttiin loadMenu()-metodiin");
+//        System.out.println("päädyttiin loadMenu()-metodiin");
         return "menu";
     }
     
 
-    @RequestMapping(value = "/form", method = RequestMethod.POST)
-    public String submitForm(@RequestParam String name, @RequestParam String address) {
-        signupRepository.save(new Signup(name, address));
-        return "done";
-    }
+ 
     
     
     
@@ -116,7 +112,7 @@ public class SignupController {
             for(Enrolment enrol: enrolments) {
                 enrolCourses.add(courseRepository.findByCourseId(enrol.getCourseId()));
             }
-            System.out.println("enrolments ei ollut null");
+//            System.out.println("enrolments ei ollut null");
             model.addAttribute("enrolCourses", enrolCourses);
 
         }
@@ -140,21 +136,21 @@ public class SignupController {
     
     @RequestMapping(value = "/courses")
     public String searchCourse(Model model, @RequestParam(required=false) String name, @RequestParam (required=false) String courseId) { //, @PathVariable String courseId, @PathVariable Long courseLongId
-        System.out.println("tultiin oikeaan metodiin");
+//        System.out.println("tultiin oikeaan metodiin");
         System.out.println("courseId: " + courseId);
         System.out.println("nimi: " + name);
         String searchcriteria = "-1";
         if((courseId != null && !courseId.isEmpty()) || (name != null && !name.isEmpty())) {
             Course course = courseRepository.findByCourseId(courseId);
             if(course == null) {courseId = null;}
-            System.out.println("löytyikö kurssi: " + course);
+//            System.out.println("löytyikö kurssi: " + course);
             if(!searchresult.contains(course)) {
                 if(course == null && (name != null) && !name.isEmpty()) {
-                    System.out.println("kurssi oli null");
+//                    System.out.println("kurssi oli null");
                     List<Course> list = new ArrayList();
                     list = courseRepository.findAll();
                     searchresult = list.stream().filter(a -> a.getName().contains(name)).collect(Collectors.toList());
-                    System.out.println("listassa nyt: " + searchresult.size());
+//                    System.out.println("listassa nyt: " + searchresult.size());
                 } else {searchresult.add(course);}
             }
         }
@@ -169,7 +165,7 @@ public class SignupController {
             searchcriteria ="-2";
         }
         System.out.println("criteria: " + searchcriteria);
-        System.out.println("result: " + searchresult.isEmpty());
+//        System.out.println("result: " + searchresult.isEmpty());
         System.out.println("resultcontent: " + searchresult);
         if(searchcriteria != "-2") {
             model.addAttribute("searchresult", searchresult); }
@@ -231,7 +227,7 @@ public class SignupController {
                 List<Record> suoritukset = recordRepository.findByStudentId(opiskelija.getNro());
                 System.out.println("kurssi: " + kurssi.getNro());
                 if(suoritukset.isEmpty() || (!(suoritukset.contains(recordRepository.findByRecordId(opiskelija.getNro() + kurssi.getNro()))))) {
-                    System.out.println("päädyttiin if-lauseeseen");
+//                    System.out.println("päädyttiin if-lauseeseen");
                     Record suoritus = new Record(opiskelija.getNro(), kurssi.getNro(), kurssi.getName(), random.nextInt(4)+1);
                     Enrolment enrolment = new Enrolment(opiskelija.getNro(), kurssi.getNro());
                     System.out.println("luotiin arvosana: " + suoritus.getEvaluation());
@@ -240,9 +236,9 @@ public class SignupController {
 //                    studentRepository.findByStudentnumber(opiskelija.getNro()).setRecords(recordRepository.findByRecordId(opiskelija.getNro() + kurssi.getNro()));
                     
                 }
-                System.out.println(opiskelija.getName() + ": if-loop loppui");
+//                System.out.println(opiskelija.getName() + ": if-loop loppui");
             }
-            System.out.println(opiskelija.getName() + ": for-loop loppui");
+//            System.out.println(opiskelija.getName() + ": for-loop loppui");
             }
         System.out.println("tallennettiin opiskelijoille suoritukset, esim. ted: " + recordRepository.findByStudentId(studentRepository.findByName("Ted").getNro()).size() + "suoritusta");
         System.out.println("tallennettiin opiskelijoille ilmoittautumiset, esim. ted: " + enrolmentRepository.findByStudentId(studentRepository.findByName("Ted").getNro()).size());
