@@ -1,6 +1,5 @@
-LINK: <link to the repository>
+LINK: https://github.com/sanhuu/CyberSecurityMoocProject
 
-<installation instructions if needed>
 The program has been built on the basis of the given template so it can be downloaded as a zip from github and downloaded as project to Netbeans where
 it can be run.
 
@@ -35,31 +34,30 @@ HY91234, Course Project II
 
 
 FLAW 1:
-<description of flaw 1>
 A5:2017-Broken Access Control
-There are several this type of security issues in Weboodi-program. The transcript of records -site and the enrolment -site requests the user to
+There are several this type of security issues in the program. The transcript of records -site and the enrolment -site requests the user to
 give their student number to download their transcript of records or enrolments. The student number is not connected to the login-data so the user
 may give whichever studentnumber and if it is an existing one, the program will download the requested information though the studentnumber would be
 someone else's. 
-<how to fix it>
+
+How to fix it:
 The student number should be connected to the login data. There shouldn't be any field to which the user should write their student number but the 
 data could be downloaded according to the user information and thus the user wouldn't have access to information that doesn't belong to him/her.
 This would also make the application nicer to use since now the user needs to write his/her studentnumber constantly in order to get the information
-needed. Also the access to the pages simply by writing the URL should be blocked for example by proper controlling of the session tokens. 
+needed.  
 
 FLAW 2:
-<description of flaw 2>
 A2:2017-Broken Authentication
 The program doesn't allow the user to log out of the program nor will the program throw the user out since the session never gets old. There is a 
 "Log out" -button but it doesn't do anything since the logout-function is not configured. If the program is used in a shared computer, this poses a 
 serious security threat not only due to human factor (the user forgets to shut the browser) but also because session hijacking gets easier.
-<how to fix it>
+
+How to fix it:
 An option for logging out of the session should be added to the program. This could be added directly through the logout-function in Spring Security
 package. The logout-fuction needs to be configured to the xml-file and requires the user to be directed to another page and session closed. There 
 should also be a time-limit for the session after which the user is thrown out automaticly if they haven't used the service during that time.
 
 FLAW 3:
-<description of flaw 3>
 A3:2017-Sensitive Data Exposure
 In addition to the flaw 1 which allows the user to access information that he/she shouldn't be, there is also a function that returns too much
 information to the user thus allowing him/her to easily take advantage of the flaw 1. This flaw is in the enrolment -site where a student may check
@@ -67,40 +65,41 @@ the enrolments to a specific course to see if there are others that have enrolle
 questionable to begin with because the enrolling to a course does not ask the student whether he/she wants his/her name published in the course
 enrolment list. In addition to being able to search the enrolled students and get their names, the search function also returns their student 
 numbers to the user.
-<how to fix it>
+
+How to fix it:
 In the enrolment function there should firstly be an option for the student to refuse to get their names published in the enrolment list (which is
 a functin that I think exists in the real Weboodi though not sure whether the enrolment list is there anymore due to GDPR). Also the search for 
 enrolments in specific course function in the enrolment site should be corrected so that it only shows the name of the enrolled. Now the toString() 
 -function is called and it is defined so that it also returns the student number (defining the toString() function like this propably would make
-coding a lot easier when creating admin roles to the program since those roles usually have different kind of  needs for information but this is 
+coding a lot easier when creating admin roles to the program since those roles usually have different kind of needs for information but this is 
 outside this program version :) ). 
 
 FLAW 4:
-<description of flaw 4>
 A10:2017-Insufficient Logging & Monitoring
-The service has no logging whatsoever, except for some debugging println-code that gets printed in the console. Noting that is searched or done in
-the application, gets logged and basicly all the logging that might be done into the console, is lost when the program is restarted. This means that
+The service has no logging whatsoever, except for some debugging println-code that gets printed in the console. Nothing that is searched or done in
+the application, gets logged and basicly all the logging that is printed to the console, is lost when the program is restarted. This means that
 both errors in the functioning of the application and possible attacks on the application are very difficult if not impossible to detect and the at 
 least researching them is impossible.  
-<how to fix it>
+
+How to fix it:
 Proper logs should be collected and saved. The logs should not be saved just locally but outside the software so that if the software needs to be 
-restarted or re-installed, the logs won't be lost. The logs should contain the activity of the normal users but also possible errors in the 
-functioning of the application. Using some kind of log management system would propably be a good start. Though it is not enough to plainly gather
-and save the logs but also an effective monitoring and alerting system for suspicious activity in the system, would be very important in terms of
-security. This is a great help to the management team and makes detecting attacks and errors much more effective and fast.
+restarted or re-installed due to flaws or bugs, the logs won't be lost. The logs should contain the activity of the normal users but also possible 
+errors in the functioning of the application. Using some kind of log management system would propably be a good start. Though it is not enough to 
+plainly gather and save the logs but also an effective monitoring and alerting system for suspicious activity in the system, would be very important 
+in terms of security. This is a great help to the management team and makes detecting attacks and errors much more effective and fast.
 
 
 FLAW 5:
-<description of flaw 5>
 A7:2017 - Cross-Site Scripting(XSS)
 The program contains one field which was specifically created to allow this security flaw. The field that allows the running of scripts and code
-though the field in this program is currently allowing only self-destructive behaviour. The field is in enrolment-site where there is a functionality
-for checking enrolments to a specific course. The string used as search criteria is then posted to the page for the user to see it. If for example a
-script <script message="javascript" type="text/javascript">alert("Hello World");</script> is written to it, the code is executed since the sanitation
-of the input is lacking.
-<how to fix it>
+though the field in this program is currently allowing only self-destructive behaviour (I think). The field is in enrolment-site where there is a 
+functionality for checking enrolments to a specific course. The string used as search criteria is then posted to the page for the user to see it. 
+If for example a script <script message="javascript" type="text/javascript">alert("Hello World");</script> is written to it, the code is executed 
+since the sanitization of the input is lacking.
+
+How to fix it:
 This security flaw can be fixed simply by changing the th:utext in the row 32 of enrolments.html to th:text. There is no reason why unescapted text 
-should be used in part of the HTML-document, it was simply added to create the last flaw to the program and to demonstrate the security flaw allowing
-XSS-attacks. Obviously a real hacker could probably use this flaw to make the user execute code on his/her own computer but for an inexperienced 
-programmer such as ours truly taking advantage of this kind of flaw only works as shooting yourself in the leg since it'll be your computer where 
-the script is run.
+should be used in this part of the HTML-document, since the program works well with the sanitizised input. It was simply added to create the last flaw 
+to the program and to demonstrate the security flaw allowing XSS-attacks. Obviously a real hacker could probably use this flaw to make the user 
+execute code on his/her own computer but for an inexperienced programmer such as ours truly taking advantage of this kind of flaw only works as 
+shooting yourself in the leg since it'll be your computer where the script is run.
